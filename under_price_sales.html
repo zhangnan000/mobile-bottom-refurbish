@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/public_zn.css"/>
+    <link rel="stylesheet" href="css/under_price_sales.css"/>
+</head>
+<body>
+<div class="under_price_sales">
+    <div class="flash_sales_title">
+        <i></i>
+        S$1.90 SNAP
+    </div>
+    <img src="images/snap_banner.png" alt="" class="snap_banner"/>
+    <ul class="under_price_sale_box">
+        <!--<li class="under_price_sale_list">-->
+            <!--<a href="javascript:;">-->
+                <!--<img src="images/flash_sales_img.png" alt=""/>-->
+                <!--<p class="under_price_product_name">-->
+                    <!--the summer 2017 in new Morimbroidered the summer 2017 in new Morimbroidered-->
+                <!--</p>-->
+                <!--<div class="under_price_sale_price">-->
+                    <!--<span>S$10.90</span>-->
+                    <!--<s>S$10.90</s>-->
+                <!--</div>-->
+                <!--<i></i>-->
+            <!--</a>-->
+        <!--</li>-->
+    </ul>
+</div>
+<script src="js/rem.js"></script>
+<script src="js/jquery-1.11.3.js"></script>
+<script>
+    var page=1;
+    var limit=20;
+    function load_product(){
+        $.ajax({
+            type:'POST',
+            url:'http://app.itaobao.sg/activity/limit_money',
+            data:{page:page,limit:limit},
+            success:function(ret){
+                var html='';
+                $.each(ret.data.limit_money.list,function(i,p){
+                    html+=`
+                    <li class="under_price_sale_list" product_id=${p.goods_id}>
+                    <a href="javascript:;">
+                    <img src= ${p.goods_image}>
+                    <p class="under_price_product_name">
+                        ${p.goods_name}
+                    </p>
+                    <div class="under_price_sale_price">
+                    <span>${p.current_price}</span>
+                    <s>${p.origin_price}</s>
+                    </div>
+                    <i></i>
+                    </a>
+                    </li>
+            `;
+                })
+                $('.under_price_sale_box').append(html);
+                page++;
+                is_loading=0;
+            }
+        });
+    }
+    var is_loading=0;
+    load_product();
+    $(window).scroll(function(){
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $('.under_price_sales').height();
+        var windowHeight = $(this).height();
+        if(scrollHeight-scrollTop - windowHeight <=205){
+            if(is_loading==0){
+                is_loading=1;
+                load_product();
+            }
+        }
+    })
+    var product_id;
+    $(document).on('click','.under_price_sale_list',function(){
+        product_id=$(this).attr('product_id');
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+body{
+    background: #fff;
+}
+.under_price_sales{
+    width:100%;
+    height:auto;
+}
+.flash_sales_title{
+    width:100%;
+    height:0.88rem;
+    line-height:0.88rem;
+    font-size:0.28rem;
+    text-align: center;
+    position: relative;
+    background: #fff;
+    margin-bottom:0.01rem;
+    border-bottom: 0.01rem solid #ccc;
+}
+.flash_sales_title i{
+    display: block;
+    width:0.18rem;
+    height:0.32rem;
+    background: url('../images/click_back_zn.png') no-repeat;
+    background-size: cover;
+    position: absolute;
+    top:0.28rem;
+    left:0.3rem;
+}
+.snap_banner{
+    display: block;
+    width:100%;
+}
+.under_price_sale_box{
+    width:100%;
+    height:auto;
+    overflow: hidden;
+    margin-top:0.2rem;
+}
+.under_price_sale_list{
+    width:3.6rem;
+    height:5.1rem;
+    float:left;
+    margin-left:0.075rem;
+    margin-right:0.075rem;
+    margin-bottom:0.15rem;
+    box-sizing: border-box;
+    border:0.01rem solid #e1e1e1;
+    position: relative;
+}
+.under_price_sale_list i{
+    position: absolute;
+    top:0;
+    left: 0;
+    display: block;
+    width:1.1rem;
+    height:1.1rem;
+    background: url('../images/hot_under_price.png') no-repeat;
+    background-size: cover;
+}
+.under_price_sale_list img{
+    display: block;
+    width:3.6rem;
+    height:3.6rem;
+}
+.under_price_product_name{
+    width:3.4rem;
+    height:0.72rem;
+    line-height:0.36rem;
+    margin:0 auto;
+    font-size:0.28rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-top:0.1rem;
+}
+.under_price_sale_price{
+    width:100%;
+    height:0.6rem;
+    line-height: 0.6rem;
+    text-align: center;
+}
+.under_price_sale_price span:first-child{
+    display: block;
+    float: left;
+    height:0.6rem;
+    line-height: 0.6rem;
+    font-size:0.32rem;
+    color:#f8691c;
+    margin-left:0.6rem;
+}
+.under_price_sale_price s{
+    display: block;
+    float: left;
+    height:0.6rem;
+    line-height: 0.6rem;
+    font-size:0.22rem;
+    color:#999;
+    margin-left:0.35rem;
+}

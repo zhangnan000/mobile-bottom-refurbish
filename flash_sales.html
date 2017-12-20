@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/public_zn.css"/>
+    <link rel="stylesheet" href="css/flash_sales.css"/>
+</head>
+<body>
+<div class="flash_sales_container">
+    <div class="flash_sales_title">
+        <i></i>
+        Flash Sales
+    </div>
+    <div class="flash_sale_banner_box">
+        <img src="images/banner_flash_sale.jpg" alt=""/>
+    </div>
+    <div class="remaining_time_box">
+        <p>REMAINING TIME</p>
+        <div class="time-item">
+            <strong id="hour_show">00</strong>
+            <span>:</span>
+            <strong id="minute_show">00</strong>
+            <span>:</span>
+            <strong id="second_show">00</strong>
+        </div>
+    </div>
+    <ul class="product_sale_box">
+        <!--<li class="product_sale_list">-->
+            <!--<a href="javascript:;">-->
+                <!--<div class="sale_img_box">-->
+                        <!--<img src="images/flash_sales_img.png" alt=""/>-->
+                    <!--<i></i>-->
+                <!--</div>-->
+                <!--<div class="flash_sale_detail">-->
+                    <!--<p class="product_title_zn">-->
+                        <!--<a href="javascript:;">-->
+                            <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus enim ex molestiae quas sit! A asperiores at, cupiditate earum ipsum modi nam, nesciunt possimus praesentium quisquam repellat sapiente totam unde.-->
+                        <!--</a>-->
+                    <!--</p>-->
+                    <!--<div class="product_price_box">-->
+                        <!--<div class="flash_sale_price">-->
+                            <!--<p class="flash_sale_real_price">S$1380.20</p>-->
+                            <!--<s class="flash_sale_prev_price">S$1380.20</s>-->
+                        <!--</div>-->
+                        <!--<p class="click_buy_now">Buy Now</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</a>-->
+        <!--</li>-->
+    </ul>
+</div>
+<script src="js/rem.js"></script>
+<script src="js/jquery-1.11.3.js"></script>
+<script>
+    var intDiff; //倒计时总秒数量
+    var page=1;
+    var limit=20;
+    function load_product(){
+        $.ajax({
+            type:'POST',
+            url:'http://app.itaobao.sg/activity/limit_time',
+            data:{page:page,limit:limit},
+            success:function(ret){
+                alert(JSON.stringify(ret));
+                intDiff=ret.data.limit_time.details.effective_time;
+                function timer(intDiff) {
+                    window.setInterval(function(){
+                        var day = 0,
+                                hour = 0,
+                                minute = 0,
+                                second = 0; //时间默认值
+                        if (intDiff > 0) {
+//                day = Math.floor(intDiff / (60 * 60 * 24));
+                            hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                            minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                            second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                        }
+                        if (minute <= 9) minute = '0' + minute;
+                        if (second <= 9) second = '0' + second;
+//            $('#day_show').html(day + "天");
+                        $('#hour_show').html('<s id="h"></s>' + hour);
+                        $('#minute_show').html('<s></s>' + minute);
+                        $('#second_show').html('<s></s>' + second);
+                        intDiff--;
+                    }, 1000);
+                }
+                $(function() {
+                    timer(intDiff);
+                });
+                var html='';
+                $.each(ret.data.limit_time.list,function(i,p){
+                    html+=`
+                    <li class="product_sale_list" product_id=${p.goods_id}>
+                    <div class="sale_img_box">
+                    <img src=${p.goods_image}>
+                    <i></i>
+                    </div>
+                    <div class="flash_sale_detail">
+                    <p class="product_title_zn">
+                        ${p.goods_name}
+                    </p>
+                    <div class="product_price_box">
+                    <div class="flash_sale_price">
+                    <p class="flash_sale_real_price">${p.current_price}</p>
+                    <s class="flash_sale_prev_price">${p.origin_price}</s>
+                    </div>
+                    <p  class="click_buy_now">Buy Now</p>
+                    </div>
+                    </div>
+                    </a>
+                    </li>
+            `;
+                })
+                $('.product_sale_box').append(html);
+                page++;
+                is_loading=0;
+            }
+        });
+    }
+    load_product();
+    is_loading=0;
+    $(window).scroll(function(){
+            var scrollTop = $(this).scrollTop();
+            var scrollHeight = $('.flash_sales_container').height();
+            var windowHeight = $(this).height();
+            if(scrollHeight-scrollTop - windowHeight <=205){
+                if(is_loading==0){
+                    is_loading=1;
+                    load_product()
+                }
+            }
+        })
+    var product_id;
+    $(document).on('click','.product_sale_list',function(){
+        product_id=$(this).attr('product_id');
+    })
+
+
+</script>
+</body>
+</html>
